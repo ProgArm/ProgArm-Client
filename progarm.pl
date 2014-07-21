@@ -1,4 +1,7 @@
 #!/usr/bin/perl
+use strict;
+use warnings;
+
 use Device::SerialPort;
 
 my $port = Device::SerialPort->new("/dev/rfcomm0"); # TODO get device from parameter
