@@ -6,10 +6,10 @@ our(%Keys, %CODES);
 
 @Keys{qw(WatchTime WatchDate)} = ($CODES{t}, $CODES{d});
 
-sub TellTime {
+sub WatchTime {
   Speak(`date '+%-H %-M'`);
 }
 
-sub TellDate {
+sub WatchDate {
   Speak(`date '+%-d %-m %A'`);
 }

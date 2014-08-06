@@ -8,11 +8,11 @@ our(%Keys, %CODES);
     ($CODES{l}, $CODES{s}, $CODES{m});
 
 sub VolumeUp {
-  `amixer set Master playback 10%+ &`
+  `amixer set Master playback 10%+ &`;
 }
 
 sub VolumeDown {
-  `amixer set Master playback 10%- &`
+  `amixer set Master playback 10%- &`;
 }
 
 sub VolumeMute {
