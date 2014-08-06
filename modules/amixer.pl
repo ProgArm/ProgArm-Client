@@ -1,8 +1,11 @@
-#use strict;
+use strict;
 use warnings;
 
+package ProgArm;
+our(%Keys, %CODES);
+
 @Keys{qw(VolumeUp VolumeDown VolumeMute)} =
-    ($INPUT_L, $INPUT_S, $INPUT_M);
+    ($CODES{l}, $CODES{s}, $CODES{m});
 
 sub VolumeUp {
   `amixer set Master playback 10%+ &`

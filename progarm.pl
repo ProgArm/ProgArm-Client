@@ -1,13 +1,15 @@
 #!/usr/bin/perl
+use v5.10;
 use strict;
 use warnings;
-use v5.10;
+
+package ProgArm;
 
 use File::Glob ':glob';
 use Device::SerialPort;
 #use Data::Dumper;
 
-our(%Keys, %Actions, %Commands, @MyInitVariables, $ConfigFile, $ModuleDir, $Port);
+our(%KEYS, %CODES, %Keys, %Actions, %Commands, @MyInitVariables, $ConfigFile, $ModuleDir, $Port);
 
 $ConfigFile ||= 'config.pl';
 $ModuleDir ||= 'modules/';
@@ -24,6 +26,7 @@ sub Init {
     }
   }
   $Actions{$Keys{$_}} = \&{$_} for keys %Keys; # fill %Actions
+  say 'Warning! Duplicate keys found.' if keys %Actions < keys %Keys;
   do $ConfigFile if $ConfigFile and -f $ConfigFile; # init config
   &$_ for @MyInitVariables;
   InitSerialPort();
@@ -54,9 +57,13 @@ sub Loop {
 
 sub ProcessAction {
   return 1 if defined wantarray;
-  my $actionLetter = ord shift;
-  say "Action: $actionLetter";
-  &{$Actions{$actionLetter}}() if defined $Actions{$actionLetter};
+  my $actionCode = ord shift;
+  say "Action: $actionCode ($KEYS{$actionCode})";
+  if (defined $Actions{$actionCode}) {
+     &{$Actions{$actionCode}}();
+  } else {
+    UnknownAction($actionCode);
+  }
 }
 
 sub Ping {
@@ -74,7 +81,9 @@ sub UnexpectedByte {
 }
 
 sub UnknownAction {
-  say "Unknown action: ", shift;
+  my $actionCode = shift;
+  say "Unknown action: $actionCode ($KEYS{$actionCode})";
+  Speak($KEYS{$actionCode});
 }
 
 sub OnConnect {

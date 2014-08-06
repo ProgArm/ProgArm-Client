@@ -1,7 +1,10 @@
-#use strict;
+use strict;
 use warnings;
 
-$Keys{InputMode} = $INPUT_K;
+package ProgArm;
+our(%Keys, %CODES);
+
+$Keys{InputMode} = $CODES{k};
 
 sub InputMode {
   ...

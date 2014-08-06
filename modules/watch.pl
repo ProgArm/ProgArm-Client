@@ -1,7 +1,10 @@
-#use strict;
+use strict;
 use warnings;
 
-@Keys{qw(WatchTime WatchDate)} = ($INPUT_T, $INPUT_D);
+package ProgArm;
+our(%Keys, %CODES);
+
+@Keys{qw(WatchTime WatchDate)} = ($CODES{t}, $CODES{d});
 
 sub TellTime {
   Speak(`date '+%-H %-M'`);

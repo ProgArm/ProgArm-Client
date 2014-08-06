@@ -1,6 +1,7 @@
-#use v5.10;
-#use strict;
+use strict;
 use warnings;
+
+package ProgArm;
 
 sub Speak {
   my $text = shift;

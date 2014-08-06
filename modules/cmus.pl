@@ -1,8 +1,12 @@
-#use strict;
+use v5.10; # ${^CHILD_ERROR_NATIVE} was added in 5.10
+use strict;
 use warnings;
 
+package ProgArm;
+our(%Keys, %CODES);
+
 @Keys{qw(CmusNext CmusPrevious CmusPause CmusAaa)} =
-    ($INPUT_N, $INPUT_P, $INPUT_C, $INPUT_A);
+    ($CODES{n}, $CODES{p}, $CODES{c}, $CODES{a});
 
 sub CmusStart {
   `x-terminal-emulator -e cmus > /dev/null 2>&1 &`; # TODO nohup and disown?

@@ -1,7 +1,10 @@
-#use strict;
+use strict;
 use warnings;
 
-$Keys{TutorMode} = $INPUT_X;
+package ProgArm;
+our(%Keys, %CODES);
+
+$Keys{TutorMode} = $CODES{x};
 
 sub TutorMode {
   ...
