@@ -5,20 +5,27 @@ use v5.10;
 
 use File::Glob ':glob';
 use Device::SerialPort;
+#use Data::Dumper;
 
-our($Port, %Commands, %Actions, $ConfigFile, $ModuleDir);
+our(%Keys, %Actions, %Commands, @MyInitVariables, $ConfigFile, $ModuleDir, $Port);
 
 $ConfigFile ||= 'config.pl';
 $ModuleDir ||= 'modules/';
-%Commands = (p => \&Ping, P => \&Pong, L => \&ProcessAction);
 %Actions = ();
+%Commands = (p => \&Ping, P => \&Pong, L => \&ProcessAction);
 
 sub Init {
+  do 'input_codes.pl'; # TODO write something like a perl module instead?
   if ($ModuleDir and -d $ModuleDir) {
-    do $_ for bsd_glob("$ModuleDir/*.p[ml]"); # init modules
+    for (bsd_glob("$ModuleDir/*.p[ml]")) { # init modules
+      say "Initializing $_";
+      do $_;
+      say $@ if $@;
+    }
   }
+  $Actions{$Keys{$_}} = \&{$_} for keys %Keys; # fill %Actions
   do $ConfigFile if $ConfigFile and -f $ConfigFile; # init config
-  InitVariables();
+  &$_ for @MyInitVariables;
   InitSerialPort();
 }
 
@@ -31,14 +38,11 @@ sub InitSerialPort {
   $Port->read_char_time(9e9); # wait forever until some byte is received
 }
 
-sub InitVariables {
-}
-
 sub Loop {
   while(1) {
     my $command = $Port->read(1);
     say "Byte: $command";
-    if (not defined $Commands{$command}) {
+    if (not exists $Commands{$command}) {
       UnexpectedByte($command);
       next;
     }
@@ -50,8 +54,9 @@ sub Loop {
 
 sub ProcessAction {
   return 1 if defined wantarray;
-  say ord shift;
-  
+  my $actionLetter = ord shift;
+  say "Action: $actionLetter";
+  &{$Actions{$actionLetter}}() if defined $Actions{$actionLetter};
 }
 
 sub Ping {
@@ -70,6 +75,14 @@ sub UnexpectedByte {
 
 sub UnknownAction {
   say "Unknown action: ", shift;
+}
+
+sub OnConnect {
+  ...
+}
+
+sub OnDisconnect {
+  ...
 }
 
 Init();

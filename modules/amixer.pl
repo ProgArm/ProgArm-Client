@@ -1,15 +1,17 @@
-%Actions{$INPUT_E} = \&VolumeUp;
-%Actions{$INPUT_T} = \&VolumeDown;
-%Actions{$INPUT_T} = \&VolumeMute;
+#use strict;
+use warnings;
+
+@Keys{qw(VolumeUp VolumeDown VolumeMute)} =
+    ($INPUT_L, $INPUT_S, $INPUT_M);
 
 sub VolumeUp {
-  # TODO
+  `amixer set Master playback 10%+ &`
 }
 
 sub VolumeDown {
-  # TODO
+  `amixer set Master playback 10%- &`
 }
 
 sub VolumeMute {
-  # TODO
+  `amixer set Master toggle &`;
 }

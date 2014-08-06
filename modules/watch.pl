@@ -1,11 +1,12 @@
+#use strict;
+use warnings;
 
-%Actions{$INPUT_T} = \&TellTime;
-%Actions{$INPUT_D} = \&TellDate;
+@Keys{qw(WatchTime WatchDate)} = ($INPUT_T, $INPUT_D);
 
 sub TellTime {
-  # TODO
+  Speak(`date '+%-H %-M'`);
 }
 
 sub TellDate {
-  # TODO
+  Speak(`date '+%-d %-m %A'`);
 }
