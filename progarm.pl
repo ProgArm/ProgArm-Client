@@ -5,31 +5,48 @@ use warnings;
 
 package ProgArm;
 
-use File::Glob ':glob';
 use Device::SerialPort;
+use File::Glob ':glob';
+use File::Basename;
 #use Data::Dumper;
 
-our(%KEYS, %CODES, %Keys, %Actions, %Commands, @MyInitVariables, $ConfigFile, $ModuleDir, $Port);
+our(%KEYS, %CODES, %Keys, %Actions, %Commands, @MyInitVariables,
+    $ConfigFile, $ModuleDir, $IgnoreFile, %IgnoredModules, $Port);
 
 $ConfigFile ||= 'config.pl';
 $ModuleDir ||= 'modules/';
+$IgnoreFile ||= 'ignored_modules';
+%IgnoredModules = ();
 %Actions = ();
 %Commands = (p => \&Ping, P => \&Pong, L => \&ProcessAction);
 
 sub Init {
   do 'input_codes.pl'; # TODO write something like a perl module instead?
-  if ($ModuleDir and -d $ModuleDir) {
-    for (bsd_glob("$ModuleDir/*.p[ml]")) { # init modules
-      say "Initializing $_";
-      do $_;
-      say $@ if $@;
-    }
-  }
+  InitModules();
   $Actions{$Keys{$_}} = \&{$_} for keys %Keys; # fill %Actions
   say 'Warning! Duplicate keys found.' if keys %Actions < keys %Keys;
   do $ConfigFile if $ConfigFile and -f $ConfigFile; # init config
   &$_ for @MyInitVariables;
   InitSerialPort();
+}
+
+sub InitModules {
+  die 'No modules found.' unless ($ModuleDir and -d $ModuleDir); # running core without any modules is foolish
+  if ($IgnoreFile and -e $IgnoreFile) {
+    open(my $fh, "<", $IgnoreFile) or die "Failed to open file: $!\n";
+    while(<$fh>) {
+      chomp;
+      $IgnoredModules{$_} = 1;
+    }
+    close $fh;
+  }
+  for (bsd_glob("$ModuleDir/*.p[ml]")) {
+    my $basename = fileparse($_);
+    next if exists $IgnoredModules{$basename};
+    say "Initializing $_";
+    do $_;
+    say $@ if $@;
+  }
 }
 
 sub InitSerialPort {
