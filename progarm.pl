@@ -68,7 +68,7 @@ sub Loop {
     }
     my $bytesNeeded = &{$Commands{$command}}();
     my ($count, @newBytes) = $Port->read($bytesNeeded); # TODO check count?
-    &{$Commands{$command}}(@newBytes);
+    $Commands{$command}->(@newBytes);
   }
 }
 
@@ -77,7 +77,7 @@ sub ProcessAction {
   my $actionCode = ord shift;
   say "Action: $actionCode ($KEYS{$actionCode})";
   if (defined $Actions{$actionCode}) {
-     &{$Actions{$actionCode}}();
+    CallAction($actionCode);
   } else {
     UnknownAction($actionCode);
   }
@@ -95,6 +95,10 @@ sub Pong {
 
 sub UnexpectedByte {
   say "Skipping unexpected byte: ", shift;
+}
+
+sub CallAction {
+  $Actions{$_[0]}->();
 }
 
 sub UnknownAction {

@@ -13,12 +13,13 @@ sub CmusStart {
 }
 
 sub CmusNext {
+  return CmusPrevious() if $_[0] ~~ -1;
   `cmus-remote --next`;
   CmusStart() if ${^CHILD_ERROR_NATIVE};
 }
 
 sub CmusPrevious {
-  `cmus-remote --prev`;
+  `cmus-remote --prev &`;
 }
 
 sub CmusPause {
@@ -27,5 +28,5 @@ sub CmusPause {
 }
 
 sub CmusAaa {
-  `cmus-remote -C 'toggle aaa_mode'`
+  `cmus-remote -C 'toggle aaa_mode' &`
 }
