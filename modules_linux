@@ -1,0 +1,10 @@
+bluetooth_linux.pl
+speak_flite.pl
+
+repeat.pl
+tutor.pl
+watch.pl
+
+amixer.pl
+cmus.pl
+xdotool.pl

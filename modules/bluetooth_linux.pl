@@ -3,6 +3,8 @@ use warnings;
 
 package ProgArm;
 
+use Device::SerialPort;
+
 my $Port;
 
 sub InitConnection {

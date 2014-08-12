@@ -5,7 +5,7 @@ use warnings;
 
 package ProgArm;
 
-use Device::SerialPort;
+use Config;
 use File::Glob ':glob';
 use File::Basename;
 #use Data::Dumper;
@@ -15,7 +15,7 @@ our(%KEYS, %CODES, %Keys, %Actions, %Commands, @MyInitVariables,
 
 $ConfigFile ||= 'config.pl';
 $ModuleDir ||= 'modules/';
-$IgnoreFile ||= 'ignored_modules';
+$ModuleListDir ||= './';
 %IgnoredModules = ();
 %Actions = ();
 %Commands = (p => \&Ping, P => \&Pong, L => \&ProcessAction);
@@ -31,22 +31,20 @@ sub Init {
 }
 
 sub InitModules {
-  die 'No modules found.' unless ($ModuleDir and -d $ModuleDir); # because running core without any modules is foolish
-  if ($IgnoreFile and -e $IgnoreFile) {
-    open(my $fh, "<", $IgnoreFile) or die "Failed to open file: $!\n";
-    while(<$fh>) {
-      chomp;
-      $IgnoredModules{$_} = 1;
-    }
-    close $fh;
+  my $modulesSuffix = '';
+  if ($^O eq 'linux') {
+    $modulesSuffix = $Config{archname} =~ 'arm' ? 'android' : 'linux'; # TODO find a better way to detect android
+  } else {
+    die 'Your operating system is not supported yet :(';
   }
-  for (bsd_glob("$ModuleDir/*.p[ml]")) {
-    my $basename = fileparse($_);
-    next if exists $IgnoredModules{$basename};
+
+  open(my $fh, "<", $ModuleListDir . '/modules_' . $modulesSuffix) or die "Failed to open file: $!\n";
+  while(<$fh>) {
     say "Initializing $_";
     do $_;
     say $@ if $@;
   }
+  close $fh;
 }
 
 sub Loop {
