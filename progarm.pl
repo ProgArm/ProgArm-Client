@@ -11,7 +11,7 @@ use File::Basename;
 #use Data::Dumper;
 
 our(%KEYS, %CODES, %Keys, %Actions, %Commands, @MyInitVariables,
-    $ConfigFile, $ModuleDir, $IgnoreFile, %IgnoredModules, $Port);
+    $ConfigFile, $ModuleDir, $ModuleListDir, $IgnoreFile, %IgnoredModules, $Port);
 
 $ConfigFile ||= 'config.pl';
 $ModuleDir ||= 'modules/';
@@ -40,9 +40,12 @@ sub InitModules {
 
   open(my $fh, "<", $ModuleListDir . '/modules_' . $modulesSuffix) or die "Failed to open file: $!\n";
   while(<$fh>) {
+    chomp;
+    next unless $_;
     say "Initializing $_";
-    do $_;
+    do "$ModuleDir/$_";
     say $@ if $@;
+    say $! if $!;
   }
   close $fh;
 }
@@ -97,11 +100,11 @@ sub UnknownAction {
 }
 
 sub OnConnect {
-  ...
+  # TODO
 }
 
 sub OnDisconnect {
-  ...
+  # TODO
 }
 
 Init();

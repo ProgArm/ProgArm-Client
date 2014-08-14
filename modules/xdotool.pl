@@ -7,5 +7,5 @@ our(%Keys, %CODES);
 $Keys{InputMode} = $CODES{k};
 
 sub InputMode {
-  ...
+  # TODO
 }
