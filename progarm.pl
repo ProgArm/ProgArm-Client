@@ -1,44 +1,50 @@
 #!/usr/bin/perl
-use v5.10;
 use strict;
 use warnings;
+use v5.10;
 
 package ProgArm;
 
-use Config;
-use File::Glob ':glob';
 use File::Basename;
-#use Data::Dumper;
 
 our(%KEYS, %CODES, %Keys, %Actions, %Commands, @MyInitVariables,
-    $ConfigFile, $ModuleDir, $ModuleListDir, $IgnoreFile, %IgnoredModules, $Port);
+    $ConfigFile, $ModuleDir, $ModuleListDir, $IgnoreFile, %IgnoredModules,
+    $WorkDir, $SystemType);
 
-$ConfigFile ||= 'config.pl';
+$WorkDir ||= dirname(__FILE__); # TODO is it the most convenient way for us?
+chdir $WorkDir or die "Cannot cd to $WorkDir: $!\n";
+$ConfigFile ||= 'config.pl'; # TODO change to //= ?
 $ModuleDir ||= 'modules/';
 $ModuleListDir ||= './';
 %IgnoredModules = ();
 %Actions = ();
 %Commands = (p => \&Ping, P => \&Pong, L => \&ProcessAction);
 
+# TODO ignore detection if OS was specified via command-line arguments
+sub DetectSystem { # sloppy rules to determine operating system
+  if ($^O eq 'linux') {
+    # there is no android detection beacuse android_launcher.pl will set $SystemType variable
+    return 'maemo' if `uname -n` eq 'Nokia-N900';
+    return 'gnu+linux';
+  }
+  die 'Your operating system is not supported yet :(';
+}
+
 sub Init {
-  do 'input_codes.pl'; # TODO write something like a perl module instead?
+  $SystemType ||= DetectSystem();
+  do "$WorkDir/input_codes.pl"; # TODO write something like a perl module instead?
+  say $! if $!;
   InitModules();
   $Actions{$Keys{$_}} = \&{$_} for keys %Keys; # fill %Actions
   say 'Warning! Duplicate keys found.' if keys %Actions < keys %Keys;
   do $ConfigFile if $ConfigFile and -f $ConfigFile; # init config
+  say $! if $!;
   &$_ for @MyInitVariables;
   InitConnection();
 }
 
 sub InitModules {
-  my $modulesSuffix = '';
-  if ($^O eq 'linux') {
-    $modulesSuffix = $Config{archname} =~ 'arm' ? 'android' : 'linux'; # TODO find a better way to detect android
-  } else {
-    die 'Your operating system is not supported yet :(';
-  }
-
-  open(my $fh, "<", $ModuleListDir . '/modules_' . $modulesSuffix) or die "Failed to open file: $!\n";
+  open(my $fh, "<", $ModuleListDir . '/modules_' . $SystemType) or die "Failed to open file: $!\n";
   while(<$fh>) {
     chomp;
     next unless $_;
@@ -56,9 +62,9 @@ sub Loop {
     say "Byte: $command";
     if (not exists $Commands{$command}) {
       UnexpectedByte($command);
-      next;
+      next; # skipping bytes is bad, because it can have unknown side effects, but it works OK in practice
     }
-    my $bytesNeeded = &{$Commands{$command}}();
+    my $bytesNeeded = $Commands{$command}->();
     my ($count, @newBytes) = Read($bytesNeeded); # TODO check count?
     $Commands{$command}->(@newBytes);
   }
@@ -76,7 +82,7 @@ sub ProcessAction {
 }
 
 sub Ping {
-  return 1 if defined wantarray; # TODO why bother? Just Read() as much bytes as we need?
+  return 1 if defined wantarray; # TODO why bother? Just Read() as much bytes as we need? # TODO indeed.
   Write('p');
 }
 
