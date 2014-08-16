@@ -3,21 +3,23 @@ use warnings;
 use Hook::LexWrap;
 
 package ProgArm;
-our(%Actions, %Keys, %CODES, $OldAction);
+our(%Actions, %Keys, $OldAction);
 
-@Keys{qw(Repeat RepeatNegative)} = ($CODES{Space}, $CODES{Backspace});
+@Keys{qw(Repeat RepeatNegative)} = qw(Space Backspace);
+
+my $thisActionIsRepeat;
 
 wrap CallAction, post => sub {
-  my $action = shift;
-  if ($action != $Keys{Repeat} and $action != $Keys{RepeatNegative}) {
-    $OldAction = $action;
-  }
+  $OldAction = shift unless $thisActionIsRepeat;
+  $thisActionIsRepeat = '';
 };
 
 sub Repeat {
   $Actions{$OldAction}->(1) if defined $OldAction;
+  $thisActionIsRepeat = 1;
 }
 
 sub RepeatNegative {
   $Actions{$OldAction}->(-1) if defined $OldAction;
+  $thisActionIsRepeat = 1;
 }

@@ -2,9 +2,9 @@ use strict;
 use warnings;
 
 package ProgArm;
-our(%Keys, %CODES);
+our(%Keys);
 
-@Keys{qw(WatchTime WatchDate)} = ($CODES{t}, $CODES{d});
+@Keys{qw(WatchTime WatchDate)} = qw(t d);
 
 my @days = qw(Monday Tuesday Wednesday Thursday Friday);
 

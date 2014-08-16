@@ -5,7 +5,7 @@ use v5.10;
 package ProgArm;
 our(%Keys, %CODES);
 
-$Keys{TutorMode} = $CODES{x};
+$Keys{TutorMode} = 'x';
 
 our $TutorMaxAttempts = 3;
 my $tutorOn;

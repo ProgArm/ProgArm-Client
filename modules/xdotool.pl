@@ -2,9 +2,9 @@ use strict;
 use warnings;
 
 package ProgArm;
-our(%Keys, %CODES);
+our(%Keys);
 
-$Keys{InputMode} = $CODES{k};
+$Keys{InputMode} = 'k';
 
 sub InputMode {
   # TODO

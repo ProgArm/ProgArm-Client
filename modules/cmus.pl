@@ -3,10 +3,9 @@ use strict;
 use warnings;
 
 package ProgArm;
-our(%Keys, %CODES);
+our(%Keys);
 
-@Keys{qw(CmusNext CmusPrevious CmusPause CmusAaa)} =
-    ($CODES{n}, $CODES{p}, $CODES{c}, $CODES{a});
+@Keys{qw(CmusNext CmusPrevious CmusPause CmusAaa)} = qw(n p c a);
 
 sub CmusStart {
   `x-terminal-emulator -e cmus > /dev/null 2>&1 &`; # TODO nohup and disown?

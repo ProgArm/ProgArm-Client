@@ -35,7 +35,7 @@ sub Init {
   do "$WorkDir/input_codes.pl"; # TODO write something like a perl module instead?
   say $! if $!;
   InitModules();
-  $Actions{$Keys{$_}} = \&{$_} for keys %Keys; # fill %Actions
+  $Actions{$CODES{$Keys{$_}}} = \&{$_} for keys %Keys; # fill %Actions
   say 'Warning! Duplicate keys found.' if keys %Actions < keys %Keys;
   do $ConfigFile if $ConfigFile and -f $ConfigFile; # init config
   say $! if $!;

@@ -2,10 +2,9 @@ use strict;
 use warnings;
 
 package ProgArm;
-our(%Keys, %CODES);
+our(%Keys);
 
-@Keys{qw(AndroidMusicNext AndroidMusicPrevious AndroidMusicPause AndroidMusicAaa)} =
-    ($CODES{n}, $CODES{p}, $CODES{c}, $CODES{a});
+@Keys{qw(AndroidMusicNext AndroidMusicPrevious AndroidMusicPause AndroidMusicAaa)} = qw(n p c a);
 
 sub AndroidMusicStart {
   # TODO

@@ -2,10 +2,9 @@ use strict;
 use warnings;
 
 package ProgArm;
-our(%Keys, %CODES);
+our(%Keys);
 
-@Keys{qw(VolumeUp VolumeDown VolumeMute)} =
-    ($CODES{l}, $CODES{s}, $CODES{m});
+@Keys{qw(VolumeUp VolumeDown VolumeMute)} = qw(l s m);
 
 sub VolumeUp {
   return VolumeDown() if $_[0] ~~ -1;
