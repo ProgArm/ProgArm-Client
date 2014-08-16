@@ -8,3 +8,5 @@ watch.pl
 amixer.pl
 cmus.pl
 maemo.pl
+
+cli.pl

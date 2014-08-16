@@ -4,3 +4,5 @@ speak_android.pl
 repeat.pl
 tutor.pl
 watch.pl
+
+cli.pl

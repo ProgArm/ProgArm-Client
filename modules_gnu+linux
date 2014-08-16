@@ -8,3 +8,5 @@ watch.pl
 amixer.pl
 cmus.pl
 xdotool.pl
+
+cli.pl
