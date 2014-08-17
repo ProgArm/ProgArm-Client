@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use v5.10;
+use Hook::LexWrap;
 
 package ProgArm;
 our(%Keys, %CODES);
