@@ -9,6 +9,7 @@ my $Port;
 
 sub InitConnection {
   $Port = Device::SerialPort->new("/dev/rfcomm0"); # TODO get device from command line arguments?
+  return undef unless defined $Port;
   $Port->databits(8);
   $Port->baudrate(38400);
   $Port->parity("none");

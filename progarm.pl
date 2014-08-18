@@ -17,6 +17,7 @@ $ConfigFile ||= 'config.pl'; # TODO change to //= ?
 $ModuleDir ||= 'modules/';
 $ModuleListDir ||= './';
 %IgnoredModules = ();
+
 %Actions = ();
 %Commands = (p => \&Ping, P => \&Pong, L => \&ProcessAction);
 
@@ -40,7 +41,8 @@ sub Init {
   do $ConfigFile if $ConfigFile and -f $ConfigFile; # init config
   say $! if $!;
   &$_ for @MyInitVariables;
-  InitConnection();
+  InitConnection(); # initialize connection
+  Speak("Online!");
 }
 
 sub InitModules {

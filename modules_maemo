@@ -1,4 +1,5 @@
 bluetooth_linux.pl
+reconnect.pl
 speak_espeak.pl
 
 repeat.pl
