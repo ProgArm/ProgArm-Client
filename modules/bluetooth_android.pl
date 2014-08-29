@@ -12,12 +12,12 @@ sub InitConnection {
 
 sub Read {
   if (wantarray) {
-    my $count = shift;
+    my $count = $_[0];
     my @result = ();
     push @result, $Android->bluetoothRead(1)->{'result'} for 1..$count;
     return ($count, @result);
   }
-  return $Android->bluetoothRead(shift)->{'result'};
+  return $Android->bluetoothRead($_[0])->{'result'};
 }
 
 sub Write {

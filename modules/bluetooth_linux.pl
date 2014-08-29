@@ -18,7 +18,11 @@ sub InitConnection {
 }
 
 sub Read {
-  return $Port->read(shift);
+  if (wantarray) {
+    my ($count, $result) = $Port->read($_[0]);
+    return ($count, split(//, $result));
+  }
+  return $Port->read($_[0]);
 }
 
 sub Write {

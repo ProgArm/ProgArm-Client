@@ -23,9 +23,9 @@ wrap InitConnection,
 };
 
 wrap Read, post => sub {
-  my $bytesNeeded = $_[0];
+  my ($bytesNeeded) = @_;
   if (wantarray) {
-    my ($count, @newBytes) = @$_[-1];
+    my ($count, @newBytes) = @{$_[-1]};
     if ($count < $bytesNeeded) {
       InitConnection();
       push @newBytes, Read($count - $bytesNeeded); # XXX this is untested
