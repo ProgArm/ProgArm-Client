@@ -29,3 +29,17 @@ sub CmusPause {
 sub CmusAaa {
   `cmus-remote -C 'toggle aaa_mode' &`
 }
+
+sub CmusIsPlaying {
+  my $out = `cmus-remote -Q 2> /dev/null` =~ /^status playing$/m;
+}
+
+my $wasPaused;
+wrap Speak,
+    pre => sub {
+      $wasPaused = CmusIsPlaying();
+      CmusPause() if $wasPaused;
+},
+    post => sub {
+      CmusPause() if $wasPaused;
+};
