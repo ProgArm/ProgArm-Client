@@ -7,7 +7,7 @@ use POSIX qw(strftime);
 package ProgArm;
 our(%Keys, $TimestampsFile);
 
-@Keys{SaveTimestamp} = 'w';
+$Keys{SaveTimestamp} = 'w';
 $TimestampsFile = 'timestamps';
 
 sub SaveTimestamp {
