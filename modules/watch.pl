@@ -16,5 +16,5 @@ sub WatchTime {
 
 sub WatchDate {
   return WatchTime() if $_[0] ~~ -1;
-  Speak(strftime("%d %A %m)", localtime));
+  Speak(strftime("%d %A %m", localtime));
 }
