@@ -25,7 +25,7 @@ $ModuleListDir ||= './';
 sub DetectSystem { # sloppy rules to determine operating system
   if ($^O eq 'linux') {
     # there is no android detection beacuse android_launcher.pl will set $SystemType variable
-    return 'maemo' if `uname -n` eq 'Nokia-N900';
+    return 'maemo' if `uname -n` =~ /^Nokia-N900/;
     return 'gnu+linux';
   }
   die 'Your operating system is not supported yet :(';
