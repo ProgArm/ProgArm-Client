@@ -15,8 +15,11 @@ wrap InitConnection,
       scalar(InitConnection()); # run again in scalar context
 },
     post => sub {
+      if ($_[-1]) { # successful connection
+	OnConnect();
+	return;
+      }
       return if $_[0] and $_[0] eq 'reconnect'; # do not allow recursion
-      return if $_[-1]; # successful connection
       say 'Cannot initialize connection.';
       say "Trying to reconnect with $ReconnectionDelay second delay...";
       do { sleep $ReconnectionDelay } until InitConnection('reconnect');
@@ -27,6 +30,7 @@ wrap Read, post => sub {
   if (wantarray) {
     my ($count, @newBytes) = @{$_[-1]};
     if ($count < $bytesNeeded) {
+      OnDisconnect();
       InitConnection();
       push @newBytes, Read($count - $bytesNeeded); # XXX this is untested
     }
@@ -34,7 +38,16 @@ wrap Read, post => sub {
     $_[-1] = \@newBytes;
   } else {
     return if defined $_[-1];
+    OnDisconnect();
     InitConnection();
     $_[-1] = Read($bytesNeeded); # this recursion is not going to be deep
   }
 };
+
+sub OnConnect {
+  Speak("Online!");
+}
+
+sub OnDisconnect {
+  Speak("Offline!");
+}

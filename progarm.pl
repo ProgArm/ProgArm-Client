@@ -42,7 +42,6 @@ sub Init {
   say $! if $!;
   &$_ for @MyInitVariables;
   InitConnection(); # initialize connection
-  Speak("Online!");
 }
 
 sub InitModules {
@@ -105,14 +104,6 @@ sub UnknownAction {
   my $actionCode = shift;
   say "Unknown action: $actionCode ($KEYS{$actionCode})";
   Speak($KEYS{$actionCode});
-}
-
-sub OnConnect {
-  # TODO
-}
-
-sub OnDisconnect {
-  # TODO
 }
 
 Init();
