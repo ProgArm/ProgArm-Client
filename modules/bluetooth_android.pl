@@ -21,5 +21,5 @@ sub Read {
 }
 
 sub Write {
-  $Android->bluetoothWrite(shift);
+  $Android->bluetoothWrite($_[0]);
 }

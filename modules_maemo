@@ -6,6 +6,7 @@ repeat.pl
 timestamp.pl
 tutor.pl
 watch.pl
+battery.pl
 
 amixer.pl
 cmus.pl

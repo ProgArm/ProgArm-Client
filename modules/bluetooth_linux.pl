@@ -27,5 +27,5 @@ sub Read {
 }
 
 sub Write {
-  $Port->write(shift);
+  $Port->write($_[0]);
 }

@@ -6,5 +6,6 @@ repeat.pl
 timestamp.pl
 tutor.pl
 watch.pl
+battery.pl
 
 cli.pl

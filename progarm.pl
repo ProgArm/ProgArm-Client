@@ -83,7 +83,7 @@ sub ProcessAction {
 }
 
 sub Ping {
-  return 1 if defined wantarray; # TODO why bother? Just Read() as much bytes as we need? # TODO indeed.
+  return 0 if defined wantarray; # TODO why bother? Just Read() as much bytes as we need? # TODO indeed.
   Write('p');
 }
 
