@@ -11,13 +11,13 @@ sub InitConnection {
 }
 
 sub Read {
+  my $count = $_[0] // 1;
   if (wantarray) {
-    my $count = $_[0];
     my @result = ();
-    push @result, $Android->bluetoothRead(1)->{'result'} for 1..$count;
+    push @result, $Android->bluetoothRead(1)->{'result'} for 1..$count; # TODO any way to read many bytes at once?
     return ($count, @result);
   }
-  return $Android->bluetoothRead($_[0])->{'result'};
+  return $Android->bluetoothRead($count)->{'result'};
 }
 
 sub Write {

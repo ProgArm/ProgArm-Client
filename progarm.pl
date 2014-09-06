@@ -19,7 +19,7 @@ $ModuleListDir ||= './';
 %IgnoredModules = ();
 
 %Actions = ();
-%Commands = (p => \&Ping, P => \&Pong, L => \&ProcessAction);
+%Commands = (p => \&Ping, P => \&Pong, L => \&ProcessAction, T => \&PrintPlain);
 
 # TODO ignore detection if OS was specified via command-line arguments
 sub DetectSystem { # sloppy rules to determine operating system
@@ -52,21 +52,21 @@ sub InitModules {
     say "Initializing $_";
     do "$ModuleDir/$_";
     say $@ if $@;
-    say $! if $!;
+    say $! if $!; # TODO is it correct?
   }
   close $fh;
 }
 
 sub Loop {
   while(1) {
-    my $command = Read(1);
+    my $command = Read();
     say "Byte: $command";
     if (not exists $Commands{$command}) {
       UnexpectedByte($command);
       next; # skipping bytes is bad, because it can have unknown side effects, but it works OK in practice
     }
     my $bytesNeeded = $Commands{$command}->();
-    my ($count, @newBytes) = Read($bytesNeeded); # TODO check count?
+    my ($count, @newBytes) = Read($bytesNeeded);
     $Commands{$command}->(@newBytes);
   }
 }
@@ -90,6 +90,12 @@ sub Ping {
 sub Pong {
   return 0 if defined wantarray;
   say 'Pong received';
+}
+
+sub PrintPlain {
+  return 0 if defined wantarray;
+  print while ($_ = Read()) ne "\0";
+  say;
 }
 
 sub UnexpectedByte {
