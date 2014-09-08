@@ -9,7 +9,7 @@ use File::Basename;
 
 our(%KEYS, %CODES, %Keys, %Actions, %Commands, @MyInitVariables,
     $ConfigFile, $ModuleDir, $ModuleListDir, $IgnoreFile, %IgnoredModules,
-    $WorkDir, $SystemType);
+    $WorkDir, $SystemType, $UpdateInterval);
 
 $WorkDir ||= dirname(__FILE__); # TODO is it the most convenient way for us?
 chdir $WorkDir or die "Cannot cd to $WorkDir: $!\n";
@@ -17,6 +17,8 @@ $ConfigFile ||= 'config.pl'; # TODO change to //= ?
 $ModuleDir ||= 'modules/';
 $ModuleListDir ||= './';
 %IgnoredModules = ();
+$UpdateInterval //= 10000; # approximate interval between Update() calls (in milliseconds)
+my $lastUpdate = 0;
 
 %Actions = ();
 %Commands = (p => \&Ping, P => \&Pong, L => \&ProcessAction, T => \&PrintPlain);
@@ -59,7 +61,9 @@ sub InitModules {
 
 sub Loop {
   while(1) {
+    Update() if time() - $lastUpdate >= $UpdateInterval / 1000;
     my $command = Read();
+    next unless $command; # no data
     say "Byte: $command";
     if (not exists $Commands{$command}) {
       UnexpectedByte($command);
@@ -69,6 +73,10 @@ sub Loop {
     my ($count, @newBytes) = Read($bytesNeeded);
     $Commands{$command}->(@newBytes);
   }
+}
+
+sub Update {
+  $lastUpdate = time();
 }
 
 sub ProcessAction {

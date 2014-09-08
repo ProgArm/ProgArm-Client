@@ -5,6 +5,7 @@ package ProgArm;
 
 use Device::SerialPort;
 
+our $UpdateInterval;
 my $Port;
 
 sub InitConnection {
@@ -14,7 +15,7 @@ sub InitConnection {
   $Port->baudrate(38400);
   $Port->parity("none");
   $Port->stopbits(1);
-  $Port->read_char_time(9e9); # wait forever until some byte is received
+  $Port->read_char_time($UpdateInterval);
 }
 
 sub Read {
