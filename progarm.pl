@@ -64,7 +64,7 @@ sub Loop {
     Update() if time() - $lastUpdate >= $UpdateInterval / 1000;
     my $command = Read();
     next unless $command; # no data
-    say "Byte: $command";
+    say 'Byte: ' . ord($command) . " ($command)";
     if (not exists $Commands{$command}) {
       UnexpectedByte($command);
       next; # skipping bytes is bad, because it can have unknown side effects, but it works OK in practice
