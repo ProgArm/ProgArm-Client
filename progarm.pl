@@ -21,7 +21,7 @@ $UpdateInterval //= 10000; # approximate interval between Update() calls (in mil
 my $lastUpdate = 0;
 
 %Actions = ();
-%Commands = (p => \&Ping, P => \&Pong, L => \&ProcessAction, T => \&PrintPlain);
+%Commands = (d => \&SendDate, p => \&Ping, P => \&Pong, L => \&ProcessAction, T => \&PrintPlain);
 
 # TODO ignore detection if OS was specified via command-line arguments
 sub DetectSystem { # sloppy rules to determine operating system
@@ -118,6 +118,16 @@ sub UnknownAction {
   my $actionCode = shift;
   say "Unknown action: $actionCode ($KEYS{$actionCode})";
   Speak($KEYS{$actionCode});
+}
+
+sub SendDate {
+  bytes = ();
+  $time = time();
+  for ($curVal in {1..4}) {
+    push @bytes, $time & 0xFF;
+    $time >>= 8;
+  }
+  Write(chr($_)) for $bytes;
 }
 
 Init();
