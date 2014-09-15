@@ -21,6 +21,7 @@ sub SaveTimestamp {
 sub DismissLastTimestamp {
   open(my $fh, '>>', $TimestampsFile);
   say $fh strftime("Dismiss! (%Y-%m-%d %H:%M:%S)", localtime);
+  say     strftime("Dismiss! (%Y-%m-%d %H:%M:%S)", localtime);
   close($fh);
   Speak('Timestamp dismissed!');
 }
