@@ -22,6 +22,7 @@ sub CmusPrevious {
 }
 
 sub CmusPause {
+  return CmusNext() if $_[0] ~~ -1;
   `cmus-remote --pause`;
   CmusStart() if ${^CHILD_ERROR_NATIVE};
 }
