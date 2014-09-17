@@ -121,13 +121,13 @@ sub UnknownAction {
 }
 
 sub SendDate {
-  bytes = ();
-  $time = time();
-  for ($curVal in {1..4}) {
+  my @bytes = ();
+  my $time = time();
+  for (1..4) {
     push @bytes, $time & 0xFF;
     $time >>= 8;
   }
-  Write(chr($_)) for $bytes;
+  Write(chr($_)) for @bytes;
 }
 
 Init();
