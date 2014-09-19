@@ -4,7 +4,7 @@ use warnings;
 package ProgArm;
 our(%Keys, %CODES);
 
-@Keys{qw(CallAnswer CallRelease)} = qw(w r);
+@Keys{qw(CallAnswer CallRelease)} = qw(e h);
 
 sub CallAnswer {
   `dbus-send --system --print-reply --dest=com.nokia.csd.Call /com/nokia/csd/call/1 com.nokia.csd.Call.Instance.Answer`;
