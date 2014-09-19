@@ -18,7 +18,6 @@ sub GetLastTimestamp {   # TODO find a way to skip dismissed timestamps
   open(my $fh, '<', $TimestampsFile);
   while (<$fh>) { ($lastTimestamp) = /([0-9]+)$/ if /^[0-9]/ }
   close($fh);
-  say "Hello world: $lastTimestamp";
 }
 
 sub TimestampHelper {
