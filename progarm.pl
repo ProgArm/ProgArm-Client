@@ -6,6 +6,7 @@ use v5.10;
 package ProgArm;
 
 use File::Basename;
+use Getopt::Long;
 
 our(%KEYS, %CODES, %Keys, %Actions, %Commands, @MyInitVariables,
     $ConfigFile, $ModuleDir, $ModuleListDir, $IgnoreFile, %IgnoredModules,
@@ -23,7 +24,6 @@ my $lastUpdate = 0;
 %Actions = ();
 %Commands = (d => \&SendDate, p => \&Ping, P => \&Pong, L => \&ProcessAction, T => \&PrintPlain);
 
-# TODO ignore detection if OS was specified via command-line arguments
 sub DetectSystem { # sloppy rules to determine operating system
   if ($^O eq 'linux') {
     # there is no android detection beacuse android_launcher.pl will set $SystemType variable
@@ -34,6 +34,7 @@ sub DetectSystem { # sloppy rules to determine operating system
 }
 
 sub Init {
+  GetOptions('os=s' => \$SystemType); # TODO add help text
   $SystemType ||= DetectSystem();
   do "$WorkDir/input_codes.pl"; # TODO write something like a perl module instead?
   say $! if $!;
@@ -47,7 +48,7 @@ sub Init {
 }
 
 sub InitModules {
-  open(my $fh, "<", $ModuleListDir . '/modules_' . $SystemType) or die "Failed to open file: $!\n";
+  open(my $fh, "<", $ModuleListDir . '/modules_' . $SystemType) or die "Failed to open module list file: $!\n";
   while(<$fh>) {
     chomp;
     next unless $_;
