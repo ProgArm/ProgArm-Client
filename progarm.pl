@@ -34,7 +34,8 @@ sub DetectSystem { # sloppy rules to determine operating system
 }
 
 sub Init {
-  GetOptions('os=s' => \$SystemType); # TODO add help text
+  GetOptions('os=s' => \$SystemType, 'config=s' => \$ConfigFile, 'update-interval=i' => \$UpdateInterval,
+	     'modules=s' => \$ModuleDir, 'modulelists=s' => \$ModuleListDir); # TODO add help text
   $SystemType ||= DetectSystem();
   do "$WorkDir/input_codes.pl"; # TODO write something like a perl module instead?
   say $! if $!;
