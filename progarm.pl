@@ -1,4 +1,20 @@
 #!/usr/bin/perl
+=head1 NAME
+
+progarm.pl - ProgArm client written in perl
+
+=head1 SYNOPSIS
+
+./progarm.pl [--help] [--os type]
+
+Options:
+
+--os
+
+--help brief help message
+
+=cut
+
 use strict;
 use warnings;
 use v5.10;
@@ -7,6 +23,7 @@ package ProgArm;
 
 use File::Basename;
 use Getopt::Long;
+use Pod::Usage;
 
 our(%KEYS, %CODES, %Keys, %Actions, %Commands, @MyInitVariables,
     $ConfigFile, $ModuleDir, $ModuleListDir, $IgnoreFile, %IgnoredModules,
@@ -34,8 +51,14 @@ sub DetectSystem { # sloppy rules to determine operating system
 }
 
 sub Init {
+  my $man = 0;
+  my $help = 0;
   GetOptions('os=s' => \$SystemType, 'config=s' => \$ConfigFile, 'update-interval=i' => \$UpdateInterval,
-	     'modules=s' => \$ModuleDir, 'modulelists=s' => \$ModuleListDir); # TODO add help text
+	     'modules=s' => \$ModuleDir, 'modulelists=s' => \$ModuleListDir,
+	     'help|?' => \$help, 'man' => \$man);
+  pod2usage(1) if $help;
+  pod2usage(-exitval => 0, -verbose => 2) if $man;
+
   $SystemType ||= DetectSystem();
   do "$WorkDir/input_codes.pl"; # TODO write something like a perl module instead?
   say $! if $!;
