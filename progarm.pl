@@ -5,13 +5,34 @@ progarm.pl - ProgArm client written in perl
 
 =head1 SYNOPSIS
 
-./progarm.pl [--help] [--os type]
+./progarm.pl [OPTIONS]
 
 Options:
 
---os
+--os gnu+linux|android|maemo|windows
 
---help brief help message
+        Normally it will try to detect your operating system. If that fails, you
+        can specify it manually.
+
+--config PATH
+
+        Path to config file
+
+--modules PATH
+
+        Path to module files (usually 'modules/' folder)
+
+--module-lists PATH
+
+        Path to module lists folder (these files usually look like 'modules_os')
+
+--update-interval NUM
+
+        Approximate interval between Update() calls (in milliseconds)
+
+--help
+
+        Brief help message
 
 =cut
 
@@ -51,10 +72,9 @@ sub DetectSystem { # sloppy rules to determine operating system
 }
 
 sub Init {
-  my $man = 0;
-  my $help = 0;
+  my ($man, $help);
   GetOptions('os=s' => \$SystemType, 'config=s' => \$ConfigFile, 'update-interval=i' => \$UpdateInterval,
-	     'modules=s' => \$ModuleDir, 'modulelists=s' => \$ModuleListDir,
+	     'modules=s' => \$ModuleDir, 'module-lists=s' => \$ModuleListDir,
 	     'help|?' => \$help, 'man' => \$man);
   pod2usage(1) if $help;
   pod2usage(-exitval => 0, -verbose => 2) if $man;
