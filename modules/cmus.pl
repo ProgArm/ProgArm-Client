@@ -1,6 +1,6 @@
-use v5.10; # ${^CHILD_ERROR_NATIVE} was added in 5.10
 use strict;
 use warnings;
+use v5.10; # ${^CHILD_ERROR_NATIVE} was added in 5.10
 
 package ProgArm;
 our(%Keys);
