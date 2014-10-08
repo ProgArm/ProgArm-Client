@@ -29,8 +29,8 @@ sub TimestampHelper {
 sub SaveTimestamp {
   return DismissLastTimestamp() if $_[0] ~~ -1;
   open(my $fh, '>>', $TimestampsFile);
-  say $fh strftime($TimestampFormat, localtime);
-  say     strftime($TimestampFormat, localtime);
+  print $fh "\n", strftime($TimestampFormat, localtime);
+  print     "\n", strftime($TimestampFormat, localtime);
   close($fh);
   my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime (time - $lastTimestamp);
   $lastTimestamp = time;
@@ -41,8 +41,8 @@ sub SaveTimestamp {
 
 sub DismissLastTimestamp {
   open(my $fh, '>>', $TimestampsFile);
-  say $fh strftime("Previous timestamp dismissed! ($TimestampFormat)", localtime);
-  say     strftime("Previous timestamp dismissed! (%TimestampFormat)", localtime);
+  print $fh strftime("Dismissed! ($TimestampFormat)", localtime);
+  print     strftime("Dismissed! (%TimestampFormat)", localtime);
   close($fh);
   Speak('Timestamp dismissed!');
 }
