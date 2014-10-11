@@ -32,7 +32,7 @@ sub XdotoolInput {
   $_[-1] = ''; # do not call original subroutine
   my $action = shift;
   my $key = $KEYS{$action}; # TODO
-  # XXX xdotool type is bugged (does not work layouts like dvorak),
+  # XXX xdotool type is bugged (does not work for layouts like dvorak),
   # XXX so it seems like the only way to input text is to paste it.
   # XXX there is a possible fix: https://github.com/jordansissel/xdotool/pull/39
   return ($Modifiers{$key} = !$Modifiers{$key}) if exists $Modifiers{$key}; # return value does not matter

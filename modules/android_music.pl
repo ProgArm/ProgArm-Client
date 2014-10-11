@@ -7,6 +7,9 @@ our(%Keys);
 
 @Keys{qw(AndroidMusicNext AndroidMusicPrevious AndroidMusicPause AndroidMusicAaa)} = qw(n p c a);
 
+# This module will never work without some kind of a layer between
+# the perl client and Android operating system
+
 sub AndroidMusicStart {
   # TODO
 }

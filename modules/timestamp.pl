@@ -35,6 +35,7 @@ sub SaveTimestamp {
   my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime (time - $lastTimestamp);
   $lastTimestamp = time;
   Speak('Timestamp saved!');
+  # TODO so why not strftime?
   Speak("Last timestamp " . TimestampHelper($yday, 'day') . TimestampHelper($hour, 'hour')
 	. TimestampHelper($min, 'minute') . TimestampHelper($sec, 'second', 1) . ' ago');
 }
