@@ -5,7 +5,7 @@ use v5.10;
 package ProgArm;
 our(%Keys, %CODES);
 
-@Keys{qw(CallAnswer CallRelease)} = qw(e h);
+@Keys{qw(CallAnswer CallRelease)} = qw(Enter q);
 
 sub CallAnswer {
   `dbus-send --system --print-reply --dest=com.nokia.csd.Call /com/nokia/csd/call/1 com.nokia.csd.Call.Instance.Answer`;
