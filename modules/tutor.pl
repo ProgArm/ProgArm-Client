@@ -28,6 +28,7 @@ sub TutorMode {
 sub TutorRandom {
   $tutorAttempts = 0;
   $tutorChar = (keys %CODES)[rand keys %CODES];
+  $tutorChar = lc $tutorChar if length $tutorChar == 1;
   Speak($tutorChar);
 }
 
