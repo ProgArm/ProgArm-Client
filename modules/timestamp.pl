@@ -14,9 +14,11 @@ $TimestampFormat = "%Y-%m-%d %H:%M:%S %s";
 my $lastTimestamp = 0;
 GetLastTimestamp();
 
-sub GetLastTimestamp {   # TODO find a way to skip dismissed timestamps
+sub GetLastTimestamp {
   open(my $fh, '<', $TimestampsFile);
-  while (<$fh>) { ($lastTimestamp) = /([0-9]+)$/ if /^[0-9]/ }
+  while (<$fh>) {
+    $lastTimestamp = $1 if /([0-9]+)$/;
+  }
   close($fh);
 }
 
@@ -30,20 +32,24 @@ sub SaveTimestamp {
   return DismissLastTimestamp() if $_[0] ~~ -1;
   open(my $fh, '>>', $TimestampsFile);
   print $fh "\n", strftime($TimestampFormat, localtime);
-  print     "\n", strftime($TimestampFormat, localtime);
+  say             strftime($TimestampFormat, localtime);
   close($fh);
   my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime (time - $lastTimestamp);
+  my $tellDifference = $lastTimestamp > 0;
   $lastTimestamp = time;
   Speak('Timestamp saved!');
   # TODO so why not strftime?
-  Speak("Last timestamp " . TimestampHelper($yday, 'day') . TimestampHelper($hour, 'hour')
-	. TimestampHelper($min, 'minute') . TimestampHelper($sec, 'second', 1) . ' ago');
+  if ($tellDifference) {
+    Speak("Last timestamp " . TimestampHelper($yday, 'day') . TimestampHelper($hour, 'hour')
+	  . TimestampHelper($min, 'minute') . TimestampHelper($sec, 'second', 1) . ' ago');
+  }
 }
 
 sub DismissLastTimestamp {
   open(my $fh, '>>', $TimestampsFile);
-  print $fh strftime("Dismissed! ($TimestampFormat)", localtime);
-  print     strftime("Dismissed! (%TimestampFormat)", localtime);
+  print $fh strftime(" Dismissed! ($TimestampFormat)", localtime);
+  say       strftime("Dismissed! ($TimestampFormat)", localtime);
   close($fh);
   Speak('Timestamp dismissed!');
+  GetLastTimestamp();
 }
