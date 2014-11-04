@@ -4,11 +4,11 @@ use v5.10;
 use Hook::LexWrap;
 
 package ProgArm;
-our(%Keys, %CODES);
+our(%Keys, %CODES, $TutorMaxAttempts);
 
 $Keys{TutorMode} = 'x';
 
-our $TutorMaxAttempts = 3;
+$TutorMaxAttempts = 2;
 my $tutorOn;
 my $tutorChar;
 my $tutorAttempts;
