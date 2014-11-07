@@ -9,20 +9,21 @@ progarm.pl - ProgArm client written in perl
 
 Options:
 
---os gnu+linux|android|maemo|windows
-
-        Normally it will try to detect your operating system. If that fails, you
-        can specify it manually.
-
 --config PATH
 
         Path to config file
+
+--module-list gnu+linux|android|maemo|windows|...
+
+        Normally it will try to detect your operating system and use a
+        list that fits it. If that fails, you can specify it manually.
+        This option is also useful if you want to use your own module list.
 
 --modules PATH
 
         Path to module files (usually 'modules/' folder)
 
---module-lists PATH
+--module-lists-folder PATH
 
         Path to module lists folder (these files usually look like 'modules_os')
 
@@ -73,9 +74,9 @@ sub DetectSystem { # sloppy rules to determine operating system
 
 sub Init {
   my ($man, $help);
-  GetOptions('os=s' => \$SystemType, 'config=s' => \$ConfigFile, 'update-interval=i' => \$UpdateInterval,
-	     'modules=s' => \$ModuleDir, 'module-lists=s' => \$ModuleListDir,
-	     'help|?' => \$help, 'man' => \$man);
+  GetOptions('module-list=s' => \$SystemType, 'config=s' => \$ConfigFile, 'update-interval=i' => \$UpdateInterval,
+	     'modules=s' => \$ModuleDir, 'module-lists-folder=s' => \$ModuleListDir,
+	     'help|?' => \$help, 'man' => \$man); # TODO modules/module-list/module-lists-folder <- this is confusing, try to simplify it
   pod2usage(1) if $help;
   pod2usage(-exitval => 0, -verbose => 2) if $man;
 
