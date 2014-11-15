@@ -30,15 +30,15 @@ wrap Read, post => sub {
   $bytesNeeded = 1 if scalar @_ == 1; # Read with no arguments
   if (wantarray) {
     my ($count, @newBytes) = @{$_[-1]};
-    if ($count < $bytesNeeded) {
+    if (not defined $count or $count < $bytesNeeded) {
       OnDisconnect();
       InitConnection();
-      push @newBytes, Read($count - $bytesNeeded); # XXX this is untested
+      push @newBytes, Read($bytesNeeded - ($count // 0)); # XXX this is untested
     }
     unshift @newBytes, $bytesNeeded;
     $_[-1] = \@newBytes;
   } else {
-    return if defined $_[-1];
+    return if defined $_[-1] and $_[-1] ne '';
     OnDisconnect();
     InitConnection();
     $_[-1] = Read($bytesNeeded); # this recursion is not going to be deep
