@@ -27,6 +27,7 @@ wrap InitConnection,
 
 wrap Read, post => sub {
   my ($bytesNeeded) = @_;
+  $bytesNeeded = 1 if scalar @_ == 1; # Read with no arguments
   if (wantarray) {
     my ($count, @newBytes) = @{$_[-1]};
     if ($count < $bytesNeeded) {
