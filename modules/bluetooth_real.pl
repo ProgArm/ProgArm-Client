@@ -18,8 +18,6 @@ sub InitConnection {
   *SERVER = $obj->perlfh();
 }
 
-my $first = 1;
-
 sub Read {
   my $count = $_[0] // 1;
   my $buf = '';
