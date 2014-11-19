@@ -3,10 +3,11 @@ reconnect.pl
 speak_flite.pl
 
 repeat.pl
+log.pl
+battery.pl
 timestamp.pl
 tutor.pl
 watch.pl
-battery.pl
 
 amixer.pl
 cmus.pl
