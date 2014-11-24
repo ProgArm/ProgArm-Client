@@ -5,10 +5,10 @@ use v5.10;
 use POSIX qw(strftime);
 
 package ProgArm;
-our(%Keys, $TimestampsFile, $TimestampFormat);
+our(%Keys, $TimestampsFile, $TimestampFormat, $LogDir);
 
 $Keys{SaveTimestamp} = 'w';
-$TimestampsFile = 'timestamps';
+$TimestampsFile = "$LogDir/timestamps";
 $TimestampFormat = "%Y-%m-%d %H:%M:%S %s";
 
 my $lastTimestamp = 0;

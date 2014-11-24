@@ -4,6 +4,7 @@ use v5.10;
 use Hook::LexWrap;
 
 package ProgArm;
+our($LogDir);
 
 my $LogTimestampFormat = "%Y-%m-%d %H:%M:%S %s ";
 
@@ -11,7 +12,7 @@ my $LogTimestampFormat = "%Y-%m-%d %H:%M:%S %s ";
 # therefore we don't need any logging library (probably?)
 
 sub Log {
-  open(my $fh, '>>', 'log') or die "cannot open log file: $!"; # XXX don't open it each time?
+  open(my $fh, '>>', "$LogDir/log") or die "cannot open log file: $!"; # XXX don't open it each time?
   say $fh strftime($LogTimestampFormat, localtime), @_;
 }
 

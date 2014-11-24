@@ -6,12 +6,12 @@ use Hook::LexWrap;
 use POSIX qw(strftime);
 
 package ProgArm;
-our(%Keys, %Commands, $BatteryLogInterval, $BatteryLogFile, $ChargePrescaler);
+our(%Keys, %Commands, $BatteryLogInterval, $BatteryLogFile, $ChargePrescaler, $LogDir);
 
 $Keys{TellBatteryInfo} = qw(g);
 $Commands{B} = \&ParseBatteryInfo;
 $BatteryLogInterval = 30; # in seconds
-$BatteryLogFile = 'battery';
+$BatteryLogFile = "$LogDir/battery";
 $ChargePrescaler = 32;
 my $lastLogTime = 0; # in seconds
 

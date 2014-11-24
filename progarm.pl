@@ -48,12 +48,13 @@ use Getopt::Long;
 use Pod::Usage;
 
 our(%KEYS, %CODES, %Keys, %Actions, %Commands, @MyInitVariables,
-    $ConfigFile, $ModuleDir, $ModuleListDir, $IgnoreFile, %IgnoredModules,
+    $ConfigFile, $LogDir, $ModuleDir, $ModuleListDir, $IgnoreFile, %IgnoredModules,
     $WorkDir, $SystemType, $UpdateInterval);
 
 $WorkDir ||= dirname(__FILE__); # TODO is it the most convenient way for us?
 chdir $WorkDir or die "Cannot cd to $WorkDir: $!\n";
 $ConfigFile ||= 'config.pl'; # TODO change to //= ?
+$LogDir ||= 'logs/';
 $ModuleDir ||= 'modules/';
 $ModuleListDir ||= './';
 %IgnoredModules = ();
