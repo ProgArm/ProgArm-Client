@@ -2,8 +2,8 @@ bluetooth_real.pl
 reconnect.pl
 
 repeat.pl
-log.pl
 battery.pl
+log.pl
 timestamp.pl
 tutor.pl
 watch.pl

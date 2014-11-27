@@ -3,8 +3,8 @@ reconnect.pl
 speak_android.pl
 
 repeat.pl
-log.pl
 battery.pl
+log.pl
 timestamp.pl
 tutor.pl
 watch.pl
