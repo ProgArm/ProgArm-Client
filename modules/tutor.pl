@@ -64,7 +64,7 @@ sub Tutor {
     Speak('Wrong!');
     $tutorAttempts++;
     if ($tutorAttempts >= $TutorMaxAttempts) {
-      my $combination = %COMBINATIONS{uc($tutorChar)};
+      my $combination = $COMBINATIONS{uc($tutorChar)};
       $combination =~ s/X/x/g;
       $combination =~ /(.)(.) (.)(.)/;
       my $part1 .= GetProgArmPressDescription($1, $2);
