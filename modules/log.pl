@@ -22,4 +22,4 @@ sub LogBattery { WriteLog('battery', @_) }
 wrap CallAction, post => sub { Log 'Action ', $_[0] };
 wrap OnConnect, post => sub { Log 'Connected' };
 wrap OnDisconnect, post => sub { Log 'Disconnected' };
-wrap ParseBatteryInfo, post => sub { LogBattery $BatteryCharge, $BatteryVoltage, $BatteryTemperature }; # TODO check it
+wrap ParseBatteryInfo, post => sub { LogBattery $BatteryCharge, ' ', $BatteryVoltage, ' ', $BatteryTemperature };

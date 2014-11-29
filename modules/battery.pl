@@ -10,7 +10,7 @@ our(%Keys, %Commands, $BatteryLogInterval, $ChargePrescaler, $LogDir,
     $BatteryVoltage, $BatteryCharge, $BatteryTemperature);
 
 $Keys{TellBatteryInfo} = qw(g);
-$Commands{B} = \&ParseBatteryInfo;
+$Commands{B} = \&ReadBatteryInfo;
 $BatteryLogInterval = 30; # in seconds
 $ChargePrescaler = 32;
 my $lastLogTime = 0; # in seconds
@@ -25,19 +25,19 @@ sub TellBatteryInfo {
   # TODO
 }
 
-sub ParseBatteryInfo {
-  say 'hello';
+sub ReadBatteryInfo {
   return 0 if defined wantarray;
   my $charge = (ord(Read()) << 8) + ord Read(); # raw data
   my $voltage = (ord(Read()) << 8) + ord Read(); # raw data
   my $temperature = (ord(Read()) << 8) + ord Read(); # raw data
+  ParseBatteryInfo($charge, $voltage, $temperature);
+}
+
+sub ParseBatteryInfo {
+  my ($charge, $voltage, $temperature) = @_;
   $BatteryCharge = 0.085 * $ChargePrescaler / 128 * $charge;
   $BatteryVoltage = 6 * $voltage / 0xFFFF;
   $BatteryTemperature = 600 * $temperature / 0xFFFF - 273.15;
-  #printf "Charge: %.3f mAh (%s)\n", $realCharge, $charge;
-  #printf "Voltage: %.3f V (%s)\n", $realVoltage, $voltage;
-  #printf "Temperature: %.3f °C (%s)\n", $realTemperature, $temperature;
-  say 'bye';
 }
 
 wrap Update, post => sub {
