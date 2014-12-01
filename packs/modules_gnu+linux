@@ -14,3 +14,4 @@ cmus.pl
 xdotool.pl
 
 cli.pl
+debug.pl

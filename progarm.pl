@@ -56,7 +56,7 @@ chdir $WorkDir or die "Cannot cd to $WorkDir: $!\n";
 $ConfigFile ||= 'config.pl'; # TODO change to //= ?
 $LogDir ||= 'logs/';
 $ModuleDir ||= 'modules/';
-$ModuleListDir ||= './';
+$ModuleListDir ||= 'packs/';
 %IgnoredModules = ();
 $UpdateInterval //= 10000; # approximate interval between Update() calls (in milliseconds)
 my $lastUpdate = 0;
