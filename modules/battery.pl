@@ -20,9 +20,21 @@ $BatteryVoltage = 0;
 $BatteryCharge = 0;
 $BatteryTemperature = 0;
 
-sub TellBatteryInfo {
+my $speakIt = 0;
+
+sub AskBatteryInfo {
   Write('b');
-  # TODO
+}
+
+sub TellBatteryInfo {
+  $speakIt = 1;
+  AskBatteryInfo();
+}
+
+sub SpeakBatteryInfo {
+  $speakIt = 0;
+  # TODO add % when ProgArm 0.3 comes
+  Speak sprintf "%.0f milliampere-hour. %.2f volts.", $BatteryCharge, $BatteryVoltage;
 }
 
 sub ReadBatteryInfo {
@@ -38,10 +50,11 @@ sub ParseBatteryInfo {
   $BatteryCharge = 0.085 * $ChargePrescaler / 128 * $charge;
   $BatteryVoltage = 6 * $voltage / 0xFFFF;
   $BatteryTemperature = 600 * $temperature / 0xFFFF - 273.15;
+  SpeakBatteryInfo() if $speakIt;
 }
 
 wrap Update, post => sub {
   return if time() - $lastLogTime < $BatteryLogInterval;
   $lastLogTime = time();
-  TellBatteryInfo();
+  AskBatteryInfo();
 };
