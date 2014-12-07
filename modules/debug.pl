@@ -7,7 +7,7 @@ use POSIX qw(strftime);
 package ProgArm;
 our(%Keys);
 
-@Keys{qw(SendFakeCommand StartVibrating)} = qw(u o);
+@Keys{qw(StartVibrating StopVibrating)} = qw(o O);
 
 sub SendFakeCommand {
   Write('l' . chr(7));
@@ -15,4 +15,8 @@ sub SendFakeCommand {
 
 sub StartVibrating {
   Write('V' . chr(255));
+}
+
+sub StopVibrating {
+  Write('V' . chr(0));
 }
