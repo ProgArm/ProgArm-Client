@@ -53,7 +53,7 @@ our(%KEYS, %CODES, %Keys, %Actions, %Commands, @MyInitVariables,
 
 $WorkDir ||= dirname(__FILE__); # TODO is it the most convenient way for us?
 chdir $WorkDir or die "Cannot cd to $WorkDir: $!\n";
-$ConfigFile ||= 'config.pl'; # TODO change to //= ?
+$ConfigFile //= 'config.pl';
 $LogDir ||= 'logs/';
 $ModuleDir ||= 'modules/';
 $ModuleListDir ||= 'packs/';
