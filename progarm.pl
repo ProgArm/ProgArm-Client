@@ -70,6 +70,7 @@ sub DetectSystem { # sloppy rules to determine operating system
     return 'maemo' if `uname -n` =~ /^Nokia-N900/;
     return 'gnu+linux';
   }
+  return 'windows' if $^O eq 'MSWin32';
   die 'Your operating system is not supported yet :(';
 }
 
