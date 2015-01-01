@@ -6,18 +6,18 @@ package ProgArm;
 our(%Keys, %Commands, $SettingsFile, %Settings);
 
 $Keys{SendSettings} = qw(S);
-$Commands{s} = \&ReadSettings;
+@Commands{qw(s S)} = (\&SendSettings, \&ReadSetting);
 $SettingsFile = 'settings';
 %Settings = ();
 
 LoadSettings();
 
 sub SendSettings {
-  Write('TODO'); # TODO
+  Write('S', %_, %Settings{%_}) for keys %Settings; # TODO
 }
 
-sub ReadSettings {
-  Read(); # TODO
+sub ReadSetting {
+  %Settings{Read()} = Read(); # TODO
 }
 
 sub SaveSettings {
