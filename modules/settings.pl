@@ -17,7 +17,7 @@ sub SendSettings {
 }
 
 sub ReadSetting {
-  %Settings{Read()} = Read(); # TODO
+  $Settings{Read()} = Read(); # TODO
 }
 
 sub SaveSettings {
