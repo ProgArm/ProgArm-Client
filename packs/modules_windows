@@ -1,5 +1,6 @@
 bluetooth_real.pl
 reconnect.pl
+speak_synthesis.pl
 
 repeat.pl
 battery.pl
