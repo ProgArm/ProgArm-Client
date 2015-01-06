@@ -4,6 +4,9 @@ use v5.10;
 
 package ProgArm;
 
+our(@FliteArgs);
+@FliteArgs = qw(-voice slt);
+
 sub Speak {
-  system(qw(flite -voice slt -t), shift); # TODO maybe String::ShellQuote instead of using system?
+  system('flite', @FliteArgs,  '-t', shift); # TODO maybe String::ShellQuote instead of using system?
 }
