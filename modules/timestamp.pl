@@ -40,8 +40,10 @@ sub SaveTimestamp {
   Speak('Timestamp saved!');
   # TODO so why not strftime?
   if ($tellDifference) {
-    Speak("Last timestamp " . TimestampHelper($yday, 'day') . TimestampHelper($hour, 'hour')
-	  . TimestampHelper($min, 'minute') . TimestampHelper($sec, 'second', 1) . ' ago');
+    my $speakStr = "Last timestamp " . TimestampHelper($yday, 'day') . TimestampHelper($hour, 'hour');
+    $speakStr .= TimestampHelper($min, 'minute') . TimestampHelper($sec, 'second', 1) unless $yday; # do not tell minutes and seconds for huge differences
+    $speakStr .= ' ago';
+    Speak();
   }
 }
 
