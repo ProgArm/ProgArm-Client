@@ -13,8 +13,8 @@ $BluetoothPort = 1;
 
 sub InitConnection {
   my $obj = Net::Bluetooth->newsocket("RFCOMM");
-  return undef unless defined $obj;
-  return undef if $obj->connect($BluetoothAddress, $BluetoothPort) != 0;
+  return unless defined $obj;
+  return if $obj->connect($BluetoothAddress, $BluetoothPort) != 0;
   *SERVER = $obj->perlfh();
 }
 

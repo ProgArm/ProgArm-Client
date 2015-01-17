@@ -12,7 +12,7 @@ $RfcommPath = '/dev/rfcomm0'; # TODO get device from command line arguments?
 
 sub InitConnection {
   $Port = Device::SerialPort->new($RfcommPath);
-  return undef unless defined $Port;
+  return unless defined $Port;
   $Port->databits(8);
   $Port->baudrate(38400);
   $Port->parity('none');
