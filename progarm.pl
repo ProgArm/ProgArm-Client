@@ -169,13 +169,7 @@ sub UnknownAction {
 }
 
 sub SendDate {
-  my @bytes = ();
-  my $time = time();
-  for (1..4) {
-    push @bytes, $time & 0xFF;
-    $time >>= 8;
-  }
-  Write(chr($_)) for @bytes;
+  Write for split //, pack 'N', time; # MSB order
 }
 
 Init();
