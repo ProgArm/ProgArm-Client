@@ -169,7 +169,7 @@ sub UnknownAction {
 }
 
 sub SendDate {
-  Write for split //, pack 'N', time; # MSB order
+  Write $_ for split //, pack 'N', time; # Big-endian
 }
 
 Init();
